@@ -48,4 +48,5 @@ export interface GroupOrder {
   members: number
   max_members: number
   delivery_saving: number
+  created_by?: string
 }
