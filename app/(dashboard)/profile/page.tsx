@@ -33,11 +33,12 @@ export default function ProfilePage() {
 
   // Load saved methods from localStorage
   useEffect(() => {
-    const savedMethods = localStorage.getItem('paypack_owned_methods')
-    const savedUpi = localStorage.getItem('paypack_upi_id')
-    if (savedMethods) setSelected(JSON.parse(savedMethods))
-    if (savedUpi) setUpiId(savedUpi)
-  }, [])
+  if (!user) return
+  const savedMethods = localStorage.getItem(`paypack_owned_methods_${user.id}`)
+  const savedUpi = localStorage.getItem(`paypack_upi_id_${user.id}`)
+  if (savedMethods) setSelected(JSON.parse(savedMethods))
+  if (savedUpi) setUpiId(savedUpi)
+}, [user])
 
   const toggleMethod = (id: string) => {
     setSelected(prev =>
@@ -46,12 +47,13 @@ export default function ProfilePage() {
     setSaved(false)
   }
 
-  const handleSave = () => {
-    localStorage.setItem('paypack_owned_methods', JSON.stringify(selected))
-    localStorage.setItem('paypack_upi_id', upiId)
-    setSaved(true)
-    setTimeout(() => setSaved(false), 2000)
-  }
+   const handleSave = () => {
+  if (!user) return
+  localStorage.setItem(`paypack_owned_methods_${user.id}`, JSON.stringify(selected))
+  localStorage.setItem(`paypack_upi_id_${user.id}`, upiId)
+  setSaved(true)
+  setTimeout(() => setSaved(false), 2000)
+}
 
   return (
     <div className="p-4 space-y-5 pb-24">
