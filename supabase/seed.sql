@@ -215,3 +215,10 @@ insert into offers (method, category, platforms, cashback_pct, max_cashback, min
 -- Kotak 811
 ('Kotak 811 UPI', 'food', '{"Swiggy","Zomato"}', 5, 40, 100, 'upi_wallet', 'Cashback on food delivery'),
 ('Kotak 811 UPI', 'shopping', '{"All merchants"}', 2, 30, 200, 'upi_wallet', 'General shopping cashback');
+
+insert into group_orders (seller, item, lat, lng, members, max_members, delivery_saving) values
+('BigBasket - Gomti Nagar', 'Groceries & Vegetables', 26.8467, 80.9462, 2, 5, 40),
+('Zomato - Hazratganj', 'Lunch Order', 26.8510, 80.9398, 3, 5, 30),
+('Blinkit - Indira Nagar', 'Fruits & Dairy', 26.8553, 80.9325, 1, 4, 35),
+('Amazon - Lucknow Hub', 'Electronics & Accessories', 26.8392, 80.9271, 4, 6, 50),
+('Swiggy - Alambagh', 'Dinner Order', 26.7983, 80.9108, 2, 5, 25);
