@@ -10,8 +10,17 @@ import { GroupOrder } from '@/types'
 export default function GroupBuyPage() {
   const [orders, setOrders] = useState<GroupOrder[]>([])
   const [loading, setLoading] = useState(true)
-  const [joined, setJoined] = useState<string[]>([])
-  const [totalCO2, setTotalCO2] = useState(0)
+  const [joined, setJoined] = useState<string[]>(() => {
+  if (typeof window === 'undefined') return []
+  const saved = localStorage.getItem('paypack_joined_orders')
+  return saved ? JSON.parse(saved) : []
+})
+  const [totalCO2, setTotalCO2] = useState<number>(() => {
+  if (typeof window === 'undefined') return 0
+  const saved = localStorage.getItem('paypack_joined_orders')
+  const joinedOrders = saved ? JSON.parse(saved) : []
+  return joinedOrders.length * 0.4
+})
 
   useEffect(() => {
     supabase
@@ -24,19 +33,18 @@ export default function GroupBuyPage() {
   }, [])
 
   const handleJoin = async (order: GroupOrder) => {
-    if (joined.includes(order.id)) return
-    const newMembers = order.members + 1
-    await supabase
-      .from('group_orders')
-      .update({ members: newMembers })
-      .eq('id', order.id)
+  if (joined.includes(order.id)) return
+  const newMembers = order.members + 1
+  await supabase
+    .from('group_orders')
+    .update({ members: newMembers })
+    .eq('id', order.id)
 
-    setOrders(prev =>
-      prev.map(o => o.id === order.id ? { ...o, members: newMembers } : o)
-    )
-    setJoined(prev => [...prev, order.id])
-    setTotalCO2(prev => prev + 0.4)
-  }
+  const newJoined = [...joined, order.id]
+  setJoined(newJoined)
+  localStorage.setItem('paypack_joined_orders', JSON.stringify(newJoined))
+  setTotalCO2(prev => prev + 0.4)
+}
 
   if (loading) return <div className="p-4 text-center text-gray-400 text-sm">Loading...</div>
 

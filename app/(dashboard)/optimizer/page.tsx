@@ -25,21 +25,26 @@ export default function OptimizerPage() {
   const [results, setResults] = useState<any[]>([])
   const [loading, setLoading] = useState(false)
   const [hasSearched, setHasSearched] = useState(false)
+const [ownedMethods, setOwnedMethods] = useState<string[]>([])
+
+useEffect(() => {
+  const saved = localStorage.getItem('paypack_owned_methods')
+  if (saved) setOwnedMethods(JSON.parse(saved))
+}, [])
 
   useEffect(() => {
     supabase.from('offers').select('*').then(({ data }) => {
       setOffers(data || [])
     })
   }, [])
-
-  const handleOptimize = () => {
-    if (!amount || parseFloat(amount) <= 0) return
-    setLoading(true)
-    const best = getBestPaymentMethods(parseFloat(amount), category, offers, [])
-    setResults(best)
-    setHasSearched(true)
-    setLoading(false)
-  }
+ const handleOptimize = () => {
+  if (!amount || parseFloat(amount) <= 0) return
+  setLoading(true)
+  const best = getBestPaymentMethods(parseFloat(amount), category, offers, ownedMethods)
+  setResults(best)
+  setHasSearched(true)
+  setLoading(false)
+}
 
   return (
     <div className="p-4 space-y-5">
