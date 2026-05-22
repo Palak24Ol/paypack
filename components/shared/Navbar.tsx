@@ -13,7 +13,7 @@ export default function Navbar() {
         <button className="text-gray-400 hover:text-gray-600">
           <BellRing size={20} />
         </button>
-        <UserButton afterSignOutUrl="/sign-in" />
+        <UserButton />
       </div>
     </div>
   )
