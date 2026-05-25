@@ -66,7 +66,7 @@ export default async function LandingPage() {
 
       {/* Footer */}
       <div className="text-center pb-8 text-xs text-gray-300">
-        Built for Amazon HackOn 2025 · PayPack
+        Built by Palak
       </div>
     </div>
   )
